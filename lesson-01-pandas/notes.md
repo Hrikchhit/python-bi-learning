@@ -2,17 +2,16 @@
 
 ## groupby
 ```python
-# Filter first, then groupby
 completed = df[df['status'] == 'completed']
 
 summary = completed.groupby('city').agg(
     total_revenue = ('amount', 'sum'),
     total_orders  = ('order_id', 'count'),
     avg_order     = ('amount', 'mean')
-).reset_index()  # always reset_index after groupby
+).reset_index()
 ```
 
-## merge (SQL JOINs in pandas)
+## merge
 ```python
 merged = df1.merge(df2, on='customer_id', how='left')
 # how= 'inner', 'left', 'right', 'outer'
@@ -29,19 +28,26 @@ pivot = df.pivot_table(
 )
 ```
 
-## apply
+## apply — single column
 ```python
-# Single column
 def label(value):
     if value >= 1000:
         return 'High'
-    return 'Low'
-df['size'] = df['amount'].apply(label)
+    elif value >= 100:
+        return 'Medium'
+    else:
+        return 'Low'
 
-# Multiple columns (axis=1)
-def label(row):
+df['size'] = df['amount'].apply(label)
+```
+
+## apply — multiple columns (axis=1)
+```python
+def label(row):               # name it 'row' not 'df'
     if row['city'] == 'Melbourne' and row['amount'] > 500:
         return 'High value major'
+    return 'Other'
+
 df['col'] = df.apply(label, axis=1)
 ```
 
@@ -59,8 +65,8 @@ top = (df
 ```
 
 ## Key rules
-- Filter BEFORE groupby
-- reset_index() after groupby
-- .copy() when passing to functions
+- Filter BEFORE groupby — better performance
+- reset_index() after groupby — proper column names
+- .copy() when passing to functions — protect original
 - [] for selecting, () for calling
-- Series vs DataFrame — reset_index() gives proper column names
+- enumerate() for chart labels — always correct position
