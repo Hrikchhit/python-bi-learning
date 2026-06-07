@@ -46,3 +46,12 @@ df['date'] = df['date'].str.replace(
 Always call .copy() before modifying — prevents changing original dataframe
 Always convert data types BEFORE dropping nulls
 Always strip whitespace BEFORE title/lower case
+
+## Correct order
+1. .copy() first
+2. Fix casing
+3. Strip whitespace
+4. Convert data types
+5. Fix dates
+6. Drop nulls
+7. Drop duplicates
